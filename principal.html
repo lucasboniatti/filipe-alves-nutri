@@ -1702,22 +1702,28 @@
           return;
         }
 
+        /* Submit */
+        if (btn.id === 'tf-submit') {
+          showDone();
+          setTimeout(() => {
+            const nome = (document.getElementById('tf-nome')?.value || '').trim();
+            const tel  = (document.getElementById('tf-telefone')?.value || '').trim();
+            const qs   = new URLSearchParams();
+            if (nome) qs.set('nome', nome);
+            if (tel)  qs.set('tel', tel);
+            const dest = 'pre-consulta.html' + (qs.toString() ? '?' + qs.toString() : '');
+            try {
+              window.location.assign(dest);
+            } catch (err) {
+              window.location.href = dest;
+            }
+          }, 1400);
+          return;
+        }
+
         /* Próximo */
         if (btn.dataset.next) {
-          const next = Number(btn.dataset.next);
-          if (btn.id === 'tf-submit') {
-            showDone();
-            setTimeout(() => {
-              const nome = (document.getElementById('tf-nome')?.value || '').trim();
-              const tel  = (document.getElementById('tf-telefone')?.value || '').trim();
-              const qs   = new URLSearchParams();
-              if (nome) qs.set('nome', nome);
-              if (tel)  qs.set('tel', tel);
-              window.location.href = 'pre-consulta.html' + (qs.toString() ? '?' + qs.toString() : '');
-            }, 1400);
-            return;
-          }
-          goTo(next);
+          goTo(Number(btn.dataset.next));
           return;
         }
 
