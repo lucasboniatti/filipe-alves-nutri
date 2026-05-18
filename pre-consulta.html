@@ -928,6 +928,39 @@
 
     function submit() {
       sessionStorage.setItem('preconsulta_msg', buildWhatsAppMessage());
+      fetch('https://script.google.com/macros/s/AKfycbySdjlzQphbmHe9NzJxJAi54eI_kIzg-rJRr1gCmy1-dD0SHHRG6E8wi8kD-b7vvJw-/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          origem: 'preconsulta',
+          nome: answers.name || _nomeURL || '',
+          telefone: answers.phone || _telURL || '',
+          data_consulta: answers.data_consulta ? formatDate(answers.data_consulta) : '',
+          horario: answers.horario || '',
+          modalidade: answers.modalidade || '',
+          age: answers.age || '',
+          sex: answers.sex || '',
+          goal: labelFor('goal', answers.goal),
+          doencas: answers.doencas || '',
+          doencas_quais: answers.doencas_quais || '',
+          medicamentos: answers.medicamentos || '',
+          medicamentos_quais: answers.medicamentos_quais || '',
+          alergias: answers.alergias || '',
+          alergias_quais: answers.alergias_quais || '',
+          peso: answers.peso || '',
+          altura: answers.altura || '',
+          refeicoes: answers.refeicoes || '',
+          'come-fora': labelFor('come-fora', answers['come-fora']),
+          agua: labelFor('agua', answers.agua),
+          atividade: answers.atividade || '',
+          atividade_qual: answers.atividade_qual || '',
+          intestino: labelFor('intestino', answers.intestino),
+          sono: answers.sono || '',
+          estresse: answers.estresse || '',
+          restricao: labelFor('restricao', answers.restricao),
+          'acompanhamento-anterior': answers['acompanhamento-anterior'] || '',
+          observacoes: answers.observacoes || '',
+        }),
+      }).catch(() => {});
       window.location.href = 'obrigado-pre-consulta.html';
     }
 

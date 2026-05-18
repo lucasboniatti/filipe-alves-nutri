@@ -1697,18 +1697,24 @@
         /* Submit */
         if (btn.id === 'tf-submit') {
           showDone();
+          const nome = (document.getElementById('tf-nome')?.value || '').trim();
+          const tel  = (document.getElementById('tf-telefone')?.value || '').trim();
+          fetch('https://script.google.com/macros/s/AKfycbySdjlzQphbmHe9NzJxJAi54eI_kIzg-rJRr1gCmy1-dD0SHHRG6E8wi8kD-b7vvJw-/exec', {
+            method: 'POST',
+            body: JSON.stringify({
+              origem: 'landing',
+              nome,
+              telefone: tel,
+              objetivo: answers[1] || '',
+              historico: answers[2] || '',
+              rotina: answers[3] || '',
+            }),
+          }).catch(() => {});
           setTimeout(() => {
-            const nome = (document.getElementById('tf-nome')?.value || '').trim();
-            const tel  = (document.getElementById('tf-telefone')?.value || '').trim();
-            const qs   = new URLSearchParams();
+            const qs = new URLSearchParams();
             if (nome) qs.set('nome', nome);
             if (tel)  qs.set('tel', tel);
-            const dest = 'pre-consulta.html' + (qs.toString() ? '?' + qs.toString() : '');
-            try {
-              window.location.assign(dest);
-            } catch (err) {
-              window.location.href = dest;
-            }
+            window.location.href = 'pre-consulta.html' + (qs.toString() ? '?' + qs.toString() : '');
           }, 1400);
           return;
         }
