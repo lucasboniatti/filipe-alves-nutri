@@ -1709,7 +1709,11 @@
             showDone();
             setTimeout(() => {
               const nome = (document.getElementById('tf-nome')?.value || '').trim();
-              window.location.href = 'pre-consulta.html' + (nome ? '?nome=' + encodeURIComponent(nome) : '');
+              const tel  = (document.getElementById('tf-telefone')?.value || '').trim();
+              const qs   = new URLSearchParams();
+              if (nome) qs.set('nome', nome);
+              if (tel)  qs.set('tel', tel);
+              window.location.href = 'pre-consulta.html' + (qs.toString() ? '?' + qs.toString() : '');
             }, 1400);
             return;
           }

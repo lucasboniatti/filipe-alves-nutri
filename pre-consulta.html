@@ -403,16 +403,6 @@
         cols: 2,
       },
       {
-        id: 'name',
-        eyebrow: 'Identificação',
-        question: 'Qual é o seu nome?',
-        type: 'text',
-        placeholder: 'Seu nome completo',
-        required: true,
-        errorMsg: 'Por favor, informe seu nome.',
-        validate: v => v.trim().length >= 2,
-      },
-      {
         id: 'age',
         eyebrow: 'Identificação',
         question: 'Quantos anos você tem?',
@@ -605,8 +595,45 @@
       },
     ];
 
+    /* ── Detecta params vindos da página principal ── */
+    const _params   = new URLSearchParams(window.location.search);
+    const _nomeURL  = (_params.get('nome') || '').trim();
+    const _telURL   = (_params.get('tel')  || '').trim();
+    const _veioDaPrincipal = !!(_nomeURL || _telURL);
+
+    /* Se não vier da principal, adiciona nome e whatsapp como últimos steps */
+    if (!_veioDaPrincipal) {
+      STEPS.push(
+        {
+          id: 'name',
+          eyebrow: 'Identificação',
+          question: 'Qual é o seu nome completo?',
+          type: 'text',
+          placeholder: 'Seu nome completo',
+          required: true,
+          errorMsg: 'Por favor, informe seu nome.',
+          validate: v => v.trim().length >= 2,
+        },
+        {
+          id: 'phone',
+          eyebrow: 'Identificação',
+          question: 'Qual é o seu WhatsApp?',
+          type: 'text',
+          inputmode: 'tel',
+          placeholder: '(00) 00000-0000',
+          required: true,
+          errorMsg: 'Informe um WhatsApp válido.',
+          validate: v => v.replace(/\D/g, '').length >= 10,
+        }
+      );
+    }
+
     const answers = {};
     let current = 0;
+
+    /* Pré-preenche com dados da principal */
+    if (_nomeURL) answers['name']  = _nomeURL;
+    if (_telURL)  answers['phone'] = _telURL;
     const card = document.getElementById('step-card');
     const progressFill = document.getElementById('progress-fill');
     const stepCounter  = document.getElementById('step-counter');
@@ -767,6 +794,14 @@
         mainInput.addEventListener('keydown', e => {
           if (e.key === 'Enter' && step.type !== 'textarea') advance(step, idx, false);
         });
+        if (step.inputmode === 'tel') {
+          mainInput.addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '').slice(0, 11);
+            if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+            if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
+            this.value = v;
+          });
+        }
       }
 
       if (step.type === 'dual') {
@@ -861,7 +896,8 @@
         `🕐 Horário preferido: ${answers['horario'] || '—'}`,
         `📍 Modalidade: ${modal}`,
         '',
-        `👤 Nome: ${answers.name || '—'}`,
+        `👤 Nome: ${answers.name || _nomeURL || '—'}`,
+        answers.phone || _telURL ? `📱 WhatsApp: ${answers.phone || _telURL}` : null,
         `🎂 Idade: ${answers.age ? answers.age + ' anos' : '—'}`,
         `⚥ Sexo: ${capitalize(answers.sex || '')}`,
         `🎯 Objetivo: ${labelFor('goal', answers.goal)}`,
@@ -887,7 +923,7 @@
       if (answers['acompanhamento-anterior'])     lines.push(`Acompanhamento anterior: ${answers['acompanhamento-anterior'] === 'sim' ? 'Sim' : 'Não'}`);
       if (answers.observacoes)                   lines.push(`\n💬 Observações: ${answers.observacoes}`);
 
-      return lines.join('\n');
+      return lines.filter(l => l !== null).join('\n');
     }
 
     function submit() {
