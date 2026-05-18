@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agende sua avaliação online com Filipe Alves Nutri pelo WhatsApp. Atendimento nutricional personalizado para emagrecimento saudável.">
+  <title>Agendamento Online | Filipe Alves Nutri</title>
+  <style>
+    :root {
+      --primary: #027B82;
+      --primary-dark: #015f65;
+      --primary-light: #018188;
+      --cta-gradient: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 58%, var(--primary-light) 100%);
+      --secondary: #1A1A1A;
+      --neutral: #4A4A4A;
+      --background: #FFFFFF;
+      --soft: #F3F4F6;
+      --accent: #F97316;
+      --border: #E5E7EB;
+      --success-soft: #E6F4F1;
+      --error: #B42318;
+      --font: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--secondary);
+      background: var(--soft);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+    .back-link {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 750;
+    }
+    main {
+      padding: clamp(38px, 7vw, 82px) 0;
+    }
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+    .intro {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+    .eyebrow {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(38px, 8vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+    h2 {
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+    h3 { font-size: 18px; }
+    p { color: var(--neutral); }
+    .direct-card, .form-card, .faq-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 18px 50px rgba(26,26,26,0.06);
+    }
+    .direct-card {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+    .contact-list {
+      display: grid;
+      gap: 10px;
+    }
+    .contact-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--soft);
+      display: grid;
+      gap: 2px;
+    }
+    .contact-item strong { font-size: 14px; }
+    .contact-item span, .contact-item a {
+      color: var(--neutral);
+      font-size: 14px;
+    }
+    .btn {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 14px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(2, 123, 130, 0.18);
+      transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+    }
+    .btn:hover { transform: translateY(-2px); filter: saturate(1.08) brightness(1.03); box-shadow: 0 18px 38px rgba(2, 123, 130, 0.22); }
+    .btn-whatsapp,
+    .btn-primary {
+      background: var(--cta-gradient);
+      color: #fff;
+    }
+    .form-card {
+      padding: clamp(22px, 4vw, 34px);
+      animation: formRise 760ms 90ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    form {
+      display: grid;
+      gap: 16px;
+      margin-top: 22px;
+    }
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    input, select, textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px 14px;
+      color: var(--secondary);
+      outline: none;
+    }
+    textarea { min-height: 116px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 123, 130, 0.12);
+    }
+    .error-text {
+      display: none;
+      color: var(--error);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .field.invalid .error-text { display: block; }
+    .field.invalid input,
+    .field.invalid select,
+    .field.invalid textarea { border-color: var(--error); }
+    .form-note {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--success-soft);
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .faq {
+      margin-top: 24px;
+      display: grid;
+      gap: 12px;
+    }
+    .faq-card {
+      padding: 18px;
+      transition: transform 190ms ease, border-color 190ms ease, box-shadow 190ms ease;
+    }
+    .faq-card:hover,
+    .direct-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(2, 123, 130, 0.28);
+      box-shadow: 0 18px 42px rgba(2, 123, 130, 0.10);
+    }
+    .faq-card button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      text-align: left;
+      padding: 0;
+      color: var(--secondary);
+      cursor: pointer;
+      font-weight: 850;
+    }
+    .faq-card p {
+      display: none;
+      padding-top: 12px;
+      font-size: 15px;
+    }
+    .faq-card.open p { display: block; }
+    .intro {
+      animation: introRise 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .contact-item {
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .contact-item:hover {
+      transform: translateX(3px);
+      background: var(--success-soft);
+    }
+    .floating-whatsapp {
+      position: fixed;
+      right: 18px;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 40;
+      min-height: 56px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: var(--cta-gradient);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 900;
+      box-shadow: 0 14px 36px rgba(2, 123, 130, 0.34);
+      animation: whatsappPulse 2.8s ease-in-out infinite;
+      transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+    }
+    .floating-whatsapp:hover {
+      transform: translateY(-3px) scale(1.02);
+      filter: saturate(1.08) brightness(1.03);
+      box-shadow: 0 18px 44px rgba(2, 123, 130, 0.42);
+    }
+    .floating-whatsapp svg { width: 21px; height: 21px; display: block; }
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 620ms cubic-bezier(0.16, 1, 0.3, 1), transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 80ms; }
+    .reveal-delay-2 { transition-delay: 160ms; }
+    .reveal-delay-3 { transition-delay: 240ms; }
+    @keyframes introRise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes formRise {
+      from { opacity: 0; transform: translateY(26px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes whatsappPulse {
+      0%, 100% { box-shadow: 0 14px 36px rgba(2, 123, 130, 0.34); }
+      50% { box-shadow: 0 14px 36px rgba(2, 123, 130, 0.34), 0 0 0 9px rgba(2, 123, 130, 0.10); }
+    }
+    footer {
+      padding: 28px 0 38px;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      color: var(--neutral);
+      font-size: 14px;
+    }
+
+    @media (min-width: 860px) {
+      .container { width: min(1120px, calc(100% - 56px)); }
+      .grid { grid-template-columns: minmax(0, 0.85fr) minmax(440px, 1fr); align-items: start; }
+      .intro { position: sticky; top: 32px; }
+    }
+    @media (max-width: 520px) {
+      .back-link { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .nav { min-height: 64px; }
+      .brand { gap: 10px; font-size: 15px; }
+      .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
+      main { padding: 30px 0 54px; }
+      .grid { gap: 18px; }
+      .intro { gap: 14px; }
+      h1 {
+        font-size: clamp(34px, 11vw, 46px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+      h2 { font-size: clamp(25px, 7.5vw, 32px); }
+      .direct-card,
+      .form-card,
+      .faq-card {
+        border-radius: 18px;
+      }
+      .direct-card,
+      .form-card {
+        padding: 18px;
+      }
+      .contact-item {
+        padding: 12px;
+        border-radius: 14px;
+      }
+      form {
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .btn {
+        width: 100%;
+        min-height: 52px;
+      }
+      footer {
+        padding: 24px 0 96px;
+      }
+      .floating-whatsapp {
+        right: 14px;
+        bottom: max(14px, env(safe-area-inset-bottom));
+        width: 56px;
+        padding: 0;
+      }
+      .floating-whatsapp span { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="landing.html">
+        <span class="brand-mark">FA</span>
+        <span>Filipe Alves Nutri</span>
+      </a>
+      <a class="back-link" href="landing.html">Voltar para o site</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container grid">
+      <aside class="intro">
+        <div class="eyebrow">Agendamento</div>
+        <h1>Comece com uma conversa simples.</h1>
+        <p>Conte seu objetivo e receba o próximo passo pelo WhatsApp. O atendimento é online, com acompanhamento próximo onde você estiver.</p>
+        <section class="direct-card" aria-labelledby="contato-direto">
+          <h2 id="contato-direto">Contato direto</h2>
+          <a class="btn btn-whatsapp" href="https://wa.me/559492836085">Chamar no WhatsApp</a>
+          <div class="contact-list">
+          <div class="contact-item reveal reveal-delay-1">
+              <strong>Instagram</strong>
+              <a href="https://instagram.com/filipealvesnutri">@filipealvesnutri</a>
+            </div>
+            <div class="contact-item reveal reveal-delay-2">
+              <strong>Facebook</strong>
+              <a href="https://fb.com/filipealves.nutric">fb.com/filipealves.nutric</a>
+            </div>
+            <div class="contact-item reveal reveal-delay-3">
+              <strong>Atendimento</strong>
+              <span>Online para todo o Brasil · Base profissional em Florianópolis - SC</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="form-card" aria-labelledby="form-title">
+        <div class="eyebrow">Avaliação inicial</div>
+        <h2 id="form-title">Envie seus dados para iniciar o atendimento.</h2>
+        <p>Ao enviar, abrimos o WhatsApp com uma mensagem organizada para agilizar seu primeiro contato.</p>
+        <form id="lead-form" novalidate>
+          <div class="field">
+            <label for="name">Nome</label>
+            <input id="name" name="name" autocomplete="name" required placeholder="Seu nome completo">
+            <span class="error-text">Informe seu nome.</span>
+          </div>
+          <div class="field">
+            <label for="phone">WhatsApp</label>
+            <input id="phone" name="phone" inputmode="tel" autocomplete="tel" required placeholder="(48) 99999-9999">
+            <span class="error-text">Informe um WhatsApp válido.</span>
+          </div>
+          <div class="field">
+            <label for="goal">Principal objetivo</label>
+            <select id="goal" name="goal" required>
+              <option value="">Selecione uma opção</option>
+              <option>Emagrecer com saúde</option>
+              <option>Melhorar energia e disposição</option>
+              <option>Sair de dietas restritivas</option>
+              <option>Melhorar exames e rotina alimentar</option>
+            </select>
+            <span class="error-text">Escolha seu objetivo.</span>
+          </div>
+          <div class="field">
+            <label for="message">O que mais devo saber?</label>
+            <textarea id="message" name="message" placeholder="Conte sua rotina, dificuldade principal ou melhor horário para contato."></textarea>
+          </div>
+          <p class="form-note">O seu metabolismo não espera, mas o primeiro passo pode ser leve: uma mensagem clara e sem compromisso.</p>
+          <button class="btn btn-primary" type="submit">Enviar pelo WhatsApp</button>
+        </form>
+
+        <div class="faq" aria-label="Perguntas frequentes">
+          <article class="faq-card open reveal reveal-delay-1">
+            <button type="button" aria-expanded="true">O plano é igual para todo mundo? <span>−</span></button>
+            <p>Não. A consulta considera rotina, preferências, histórico e objetivo antes de montar o plano alimentar.</p>
+          </article>
+          <article class="faq-card reveal reveal-delay-2">
+            <button type="button" aria-expanded="false">Tem suporte entre consultas? <span>+</span></button>
+            <p>Sim. O acompanhamento online inclui suporte direto pelo WhatsApp para dúvidas e ajustes do dia a dia.</p>
+          </article>
+          <article class="faq-card reveal reveal-delay-3">
+            <button type="button" aria-expanded="false">Preciso passar fome para emagrecer? <span>+</span></button>
+            <p>Não. A proposta é emagrecer com saúde, melhorando aderência e saciedade sem dieta maluca.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">Filipe Alves Nutri · Atendimento online · WhatsApp: 55 94 9283-6085</div>
+  </footer>
+
+  <a class="floating-whatsapp" href="https://wa.me/559492836085" aria-label="Chamar Filipe Alves Nutri no WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20l1.2-4.6a8.5 8.5 0 1 1 16.3-3.9Z"></path><path d="M8.5 8.8c.2 3.1 2.6 5.5 5.7 6 .7.1 1.3-.4 1.5-1l.2-.7c.1-.4-.1-.8-.5-1l-1.2-.6c-.3-.2-.8-.1-1 .2l-.4.5c-.9-.4-1.7-1.2-2.1-2.1l.5-.4c.3-.2.4-.7.2-1l-.6-1.2c-.2-.4-.6-.6-1-.5l-.7.2c-.6.2-1 .8-1 1.5Z"></path></svg>
+    <span>WhatsApp</span>
+  </a>
+
+  <script>
+    const form = document.querySelector('#lead-form');
+    const phoneInput = document.querySelector('#phone');
+    const nameInput = document.querySelector('#name');
+    const goalInput = document.querySelector('#goal');
+    const messageInput = document.querySelector('#message');
+
+    phoneInput.addEventListener('input', () => {
+      const digits = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+      const formatted = digits.length > 10
+        ? digits.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
+        : digits.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      phoneInput.value = formatted.trim().replace(/-$/, '');
+    });
+
+    function setInvalid(field, invalid) {
+      field.closest('.field')?.classList.toggle('invalid', invalid);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = nameInput.value.trim();
+      const phoneDigits = phoneInput.value.replace(/\D/g, '');
+      const goal = goalInput.value;
+      const message = messageInput.value.trim();
+      setInvalid(nameInput, name.length < 2);
+      setInvalid(phoneInput, phoneDigits.length < 10);
+      setInvalid(goalInput, !goal);
+      if (name.length < 2 || phoneDigits.length < 10 || !goal) return;
+
+      const text = [
+        'Olá, Filipe! Quero começar meu acompanhamento nutricional.',
+        `Nome: ${name}`,
+        `WhatsApp: ${phoneInput.value}`,
+        `Objetivo: ${goal}`,
+        message ? `Observação: ${message}` : ''
+      ].filter(Boolean).join('\n');
+      window.location.href = `https://wa.me/559492836085?text=${encodeURIComponent(text)}`;
+    });
+
+    document.querySelectorAll('.faq-card button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.faq-card');
+        const open = card.classList.toggle('open');
+        button.setAttribute('aria-expanded', String(open));
+        button.querySelector('span').textContent = open ? '−' : '+';
+      });
+    });
+
+    const revealItems = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>

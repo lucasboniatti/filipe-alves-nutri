@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Pré-Consulta Enviada! | Filipe Alves Nutri</title>
+  <style>
+    :root {
+      --primary: #027B82;
+      --primary-dark: #015f65;
+      --primary-light: #03a3ac;
+      --cta-gradient: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 58%, var(--primary-light) 100%);
+      --secondary: #1A1A1A;
+      --neutral: #4A4A4A;
+      --soft: #F3F4F6;
+      --border: #E5E7EB;
+      --font: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--soft);
+      color: var(--secondary);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      width: min(520px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .card {
+      width: 100%;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: clamp(28px, 6vw, 48px);
+      text-align: center;
+      box-shadow: 0 18px 50px rgba(26,26,26,0.07);
+    }
+
+    /* ── Check ring ── */
+    .check-ring {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: var(--cta-gradient);
+      display: grid;
+      place-items: center;
+      margin: 0 auto 28px;
+      animation: pop 0.55s 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      box-shadow: 0 12px 34px rgba(2,123,130,0.30);
+    }
+    @keyframes pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .check-ring svg { color: #fff; }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      color: var(--neutral);
+      font-size: clamp(14px, 2vw, 16px);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* ── Steps ── */
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--soft);
+      border-radius: 14px;
+      font-size: 14px;
+      color: var(--neutral);
+      line-height: 1.5;
+      animation: stepReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .step:nth-child(1) { animation-delay: 0.45s; }
+    .step:nth-child(2) { animation-delay: 0.60s; }
+    .step:nth-child(3) { animation-delay: 0.75s; }
+    @keyframes stepReveal {
+      from { opacity: 0; transform: translateX(-12px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+    }
+
+    /* ── Highlight box ── */
+    .highlight {
+      background: #E6F4F1;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--primary-dark);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .highlight svg { flex-shrink: 0; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 52px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      font-family: var(--font);
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      text-decoration: none;
+      border: 0;
+      transition: filter 160ms, transform 160ms, box-shadow 160ms;
+      width: 100%;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--cta-gradient);
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(2,123,130,0.22);
+    }
+    .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 34px rgba(2,123,130,0.28); }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--neutral);
+      margin-top: 10px;
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); box-shadow: none; }
+
+    /* ── Divider + social ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 26px 0;
+    }
+
+    .social-label {
+      font-size: 13px;
+      color: var(--neutral);
+      margin-bottom: 14px;
+    }
+
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--neutral);
+      transition: background 160ms, color 160ms, transform 160ms;
+    }
+    .social-link:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <a class="brand" href="landing.html">
+      <span class="brand-mark">FA</span>
+      Filipe Alves Nutri
+    </a>
+
+    <div class="card">
+      <div class="check-ring">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m20 6-11 11-5-5"/>
+        </svg>
+      </div>
+
+      <div class="eyebrow">Pré-consulta enviada</div>
+      <h1>Pronto! Suas informações chegaram ao Filipe.</h1>
+      <p class="lead">O WhatsApp já abriu com tudo organizado. Se não abriu automaticamente, clique no botão abaixo para finalizar o envio.</p>
+
+      <div class="highlight">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="M12 8v4M12 16h.01"/>
+        </svg>
+        O Filipe analisa cada pré-consulta com atenção. Ele vai entrar em contato pelo WhatsApp em breve para agendar sua consulta inicial.
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <span>Filipe lê sua pré-consulta e entende seu perfil antes de te ligar.</span>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <span>Ele entra em contato pelo WhatsApp para agendar sua consulta inicial.</span>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <span>Você recebe um plano alimentar feito exatamente para o seu estilo de vida.</span>
+        </div>
+      </div>
+
+      <a class="btn btn-primary" id="btn-whatsapp" href="https://wa.me/559492836085">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.524 5.856L.057 23.882a.5.5 0 0 0 .612.612l6.096-1.46A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.944 9.944 0 0 1-5.07-1.382l-.363-.217-3.768.902.918-3.68-.236-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Abrir WhatsApp
+      </a>
+      <a class="btn btn-ghost" href="landing.html">Voltar ao site</a>
+
+      <hr class="divider">
+
+      <p class="social-label">Acompanhe dicas de nutrição nas redes</p>
+      <div class="social-row">
+        <a href="https://wa.me/559492836085" aria-label="WhatsApp" class="social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.524 5.856L.057 23.882a.5.5 0 0 0 .612.612l6.096-1.46A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.944 9.944 0 0 1-5.07-1.382l-.363-.217-3.768.902.918-3.68-.236-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+        </a>
+        <a href="https://instagram.com/filipealvesnutri" aria-label="Instagram" class="social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+          </svg>
+        </a>
+        <a href="https://fb.com/filipealves.nutric" aria-label="Facebook" class="social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const saved = sessionStorage.getItem('preconsulta_msg');
+    if (saved) {
+      const btn = document.getElementById('btn-whatsapp');
+      btn.href = `https://wa.me/559492836085?text=${encodeURIComponent(saved)}`;
+      sessionStorage.removeItem('preconsulta_msg');
+    }
+  </script>
+</body>
+</html>

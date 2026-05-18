@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Pré-Consulta | Filipe Alves Nutri</title>
+  <style>
+    :root {
+      --primary: #027B82;
+      --primary-dark: #015f65;
+      --primary-light: #018188;
+      --cta-gradient: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 58%, var(--primary-light) 100%);
+      --secondary: #1A1A1A;
+      --neutral: #4A4A4A;
+      --soft: #F3F4F6;
+      --border: #E5E7EB;
+      --success-soft: #E6F4F1;
+      --font: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--soft);
+      color: var(--secondary);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .nav {
+      width: min(1120px, calc(100% - 32px));
+      margin-inline: auto;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 15px;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .progress-wrap { height: 4px; background: var(--border); }
+    .progress-fill {
+      height: 100%;
+      background: var(--cta-gradient);
+      transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 0 2px 2px 0;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .step-card {
+      width: min(600px, 100%);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: clamp(28px, 5vw, 44px);
+      box-shadow: 0 18px 50px rgba(26,26,26,0.07);
+      animation: stepIn 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .step-eyebrow {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .step-question {
+      font-size: clamp(20px, 4vw, 26px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .step-hint {
+      font-size: 14px;
+      color: var(--neutral);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* ── Calendário ── */
+    .calendar-wrap { margin-bottom: 24px; }
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cal-title { font-size: 15px; font-weight: 800; }
+    .cal-nav-btn {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: var(--neutral);
+      font-family: var(--font);
+      transition: border-color 140ms, color 140ms;
+    }
+    .cal-nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .cal-weekday {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--neutral);
+      padding: 4px 0 8px;
+      letter-spacing: 0.04em;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: background 140ms, border-color 140ms, color 140ms;
+      background: #fff;
+      color: var(--secondary);
+      min-height: 38px;
+    }
+    .cal-day:hover:not(.cal-disabled):not(.cal-empty) {
+      border-color: var(--primary);
+      background: var(--success-soft);
+      color: var(--primary-dark);
+    }
+    .cal-day.cal-selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .cal-day.cal-today:not(.cal-selected) { border-color: rgba(2,123,130,0.4); color: var(--primary); }
+    .cal-day.cal-disabled { color: #D1D5DB; cursor: not-allowed; background: transparent; }
+    .cal-day.cal-empty { cursor: default; background: transparent; }
+
+    /* ── Options ── */
+    .options { display: grid; gap: 10px; margin-bottom: 24px; }
+    .options.cols-2 { grid-template-columns: 1fr 1fr; }
+    .options.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .opt-btn {
+      min-height: 52px;
+      padding: 13px 16px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--secondary);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color 160ms, background 160ms, transform 120ms, box-shadow 160ms;
+      line-height: 1.3;
+    }
+    .opt-btn:hover { border-color: var(--primary); background: var(--success-soft); transform: translateY(-1px); }
+    .opt-btn.selected {
+      border-color: var(--primary);
+      background: var(--success-soft);
+      color: var(--primary-dark);
+      box-shadow: 0 0 0 3px rgba(2,123,130,0.12);
+    }
+    .opt-icon { font-size: 20px; flex-shrink: 0; }
+
+    /* ── Inputs ── */
+    .input-wrap { margin-bottom: 24px; }
+    .tf-input {
+      width: 100%;
+      min-height: 52px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+      padding: 13px 16px;
+      font-size: 16px;
+      font-family: var(--font);
+      color: var(--secondary);
+      outline: none;
+      transition: border-color 160ms, box-shadow 160ms;
+    }
+    .tf-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2,123,130,0.12); }
+    .tf-input::placeholder { color: #9CA3AF; }
+    .tf-input.invalid { border-color: #B42318; }
+    textarea.tf-input { min-height: 110px; resize: vertical; }
+    .error-msg { font-size: 13px; font-weight: 700; color: #B42318; margin-top: 6px; display: none; }
+    .show-error .error-msg { display: block; }
+    .show-error .tf-input { border-color: #B42318; }
+
+    .dual-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .dual-inputs .input-group label { display: block; font-size: 13px; font-weight: 800; margin-bottom: 7px; }
+
+    .followup {
+      margin-top: 12px;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 360ms cubic-bezier(0.4,0,0.2,1), opacity 300ms;
+      opacity: 0;
+    }
+    .followup.open { max-height: 200px; opacity: 1; }
+    .followup label { display: block; font-size: 13px; font-weight: 800; margin-bottom: 7px; }
+
+    /* ── Nav ── */
+    .step-nav { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 14px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 15px;
+      font-family: var(--font);
+      transition: transform 160ms, filter 160ms, box-shadow 160ms;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--cta-gradient); color: #fff; box-shadow: 0 10px 28px rgba(2,123,130,0.22); flex: 1; }
+    .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 34px rgba(2,123,130,0.28); }
+    .btn-back { background: #fff; border: 1.5px solid var(--border); color: var(--neutral); padding: 13px 16px; min-width: 50px; }
+    .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+
+    .skip-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--neutral);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .skip-link:hover { color: var(--primary); }
+
+    footer { padding: 20px 0 32px; text-align: center; font-size: 13px; color: var(--neutral); }
+
+    @media (max-width: 480px) {
+      .options.cols-3 { grid-template-columns: 1fr 1fr; }
+      .dual-inputs { grid-template-columns: 1fr; }
+      .step-card { border-radius: 20px; padding: 22px 18px; }
+      .cal-day { font-size: 13px; min-height: 32px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="landing.html">
+        <span class="brand-mark">FA</span>
+        <span>Filipe Alves Nutri</span>
+      </a>
+      <span id="step-counter" style="font-size:13px;font-weight:700;color:var(--neutral)"></span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-fill" style="width:3%"></div>
+    </div>
+  </header>
+
+  <main><div class="step-card" id="step-card"></div></main>
+
+  <footer>Filipe Alves Nutri · Pré-Consulta · Seus dados ficam apenas com o Filipe.</footer>
+
+  <script>
+    const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const WEEKDAYS  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+    let calYear, calMonth;
+    function initCal() {
+      const t = new Date();
+      calYear = t.getFullYear();
+      calMonth = t.getMonth();
+    }
+
+    function buildCalHTML(selected) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+      let cells = WEEKDAYS.map(d => `<div class="cal-weekday">${d}</div>`).join('');
+      for (let i = 0; i < firstDay; i++) cells += `<div class="cal-day cal-empty"></div>`;
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(calYear, calMonth, d); date.setHours(0,0,0,0);
+        const isPast = date < today;
+        const isToday = date.getTime() === today.getTime();
+        const iso = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const isSel = selected === iso;
+        let cls = 'cal-day';
+        if (isPast) cls += ' cal-disabled';
+        if (isToday) cls += ' cal-today';
+        if (isSel) cls += ' cal-selected';
+        cells += `<div class="${cls}"${!isPast ? ` data-date="${iso}"` : ''}>${d}</div>`;
+      }
+
+      return `<div class="calendar-wrap">
+        <div class="cal-header">
+          <button class="cal-nav-btn" id="cal-prev">‹</button>
+          <span class="cal-title">${MONTHS_PT[calMonth]} ${calYear}</span>
+          <button class="cal-nav-btn" id="cal-next">›</button>
+        </div>
+        <div class="cal-grid">${cells}</div>
+      </div>`;
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      const [y,m,d] = iso.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    const STEPS = [
+      {
+        id: 'data_consulta',
+        eyebrow: 'Agendamento',
+        question: 'Escolha o melhor dia para a sua consulta.',
+        hint: 'Selecione uma data de preferência. O Filipe vai confirmar o horário pelo WhatsApp.',
+        type: 'calendar',
+      },
+      {
+        id: 'horario',
+        eyebrow: 'Agendamento',
+        question: 'Qual horário funciona melhor para você?',
+        hint: 'O Filipe vai confirmar a disponibilidade pelo WhatsApp.',
+        type: 'options',
+        cols: 3,
+        options: [
+          { value: '07:00', label: '07:00', icon: '🌅' },
+          { value: '08:00', label: '08:00', icon: '🌅' },
+          { value: '09:00', label: '09:00', icon: '☀️' },
+          { value: '10:00', label: '10:00', icon: '☀️' },
+          { value: '11:00', label: '11:00', icon: '☀️' },
+          { value: '13:00', label: '13:00', icon: '🌤️' },
+          { value: '14:00', label: '14:00', icon: '🌤️' },
+          { value: '15:00', label: '15:00', icon: '🌤️' },
+          { value: '16:00', label: '16:00', icon: '🌥️' },
+          { value: '17:00', label: '17:00', icon: '🌥️' },
+          { value: '18:00', label: '18:00', icon: '🌆' },
+          { value: '19:00', label: '19:00', icon: '🌆' },
+        ],
+      },
+      {
+        id: 'modalidade',
+        eyebrow: 'Agendamento',
+        question: 'Como prefere realizar a consulta?',
+        type: 'options',
+        options: [
+          { value: 'online',     label: 'Online',     icon: '💻', desc: 'Por videochamada, de onde você estiver' },
+          { value: 'presencial', label: 'Presencial', icon: '🏥', desc: 'Em Florianópolis - SC' },
+        ],
+        cols: 2,
+      },
+      {
+        id: 'name',
+        eyebrow: 'Identificação',
+        question: 'Qual é o seu nome?',
+        type: 'text',
+        placeholder: 'Seu nome completo',
+        required: true,
+        errorMsg: 'Por favor, informe seu nome.',
+        validate: v => v.trim().length >= 2,
+      },
+      {
+        id: 'age',
+        eyebrow: 'Identificação',
+        question: 'Quantos anos você tem?',
+        type: 'text',
+        inputmode: 'numeric',
+        placeholder: 'Ex: 32',
+        required: true,
+        errorMsg: 'Informe sua idade.',
+        validate: v => /^\d{1,3}$/.test(v.trim()) && +v >= 1 && +v <= 120,
+      },
+      {
+        id: 'sex',
+        eyebrow: 'Identificação',
+        question: 'Qual é o seu sexo biológico?',
+        hint: 'Importante para o cálculo das necessidades nutricionais.',
+        type: 'options',
+        options: [
+          { value: 'feminino',          label: 'Feminino',          icon: '♀️' },
+          { value: 'masculino',         label: 'Masculino',         icon: '♂️' },
+          { value: 'prefiro-nao-dizer', label: 'Prefiro não dizer', icon: '—'  },
+        ],
+      },
+      {
+        id: 'goal',
+        eyebrow: 'Objetivos',
+        question: 'Qual é o seu principal objetivo?',
+        type: 'options',
+        cols: 2,
+        options: [
+          { value: 'emagrecer',    label: 'Emagrecer com saúde',          icon: '🎯' },
+          { value: 'ganhar-massa', label: 'Ganhar massa muscular',         icon: '💪' },
+          { value: 'energia',      label: 'Melhorar energia e disposição', icon: '⚡' },
+          { value: 'exames',       label: 'Melhorar exames e saúde',       icon: '🩺' },
+          { value: 'sair-dietas',  label: 'Sair das dietas restritivas',   icon: '🍽️' },
+          { value: 'outro',        label: 'Outro objetivo',                icon: '✨' },
+        ],
+      },
+      {
+        id: 'doencas',
+        eyebrow: 'Saúde',
+        question: 'Você tem alguma doença diagnosticada?',
+        hint: 'Ex: diabetes, hipertensão, hipotireoidismo, colesterol alto...',
+        type: 'yesno',
+        followupPlaceholder: 'Quais doenças você tem?',
+        followupId: 'doencas_quais',
+      },
+      {
+        id: 'medicamentos',
+        eyebrow: 'Saúde',
+        question: 'Você usa algum medicamento ou suplemento?',
+        type: 'yesno',
+        followupPlaceholder: 'Quais medicamentos ou suplementos você usa?',
+        followupId: 'medicamentos_quais',
+      },
+      {
+        id: 'alergias',
+        eyebrow: 'Saúde',
+        question: 'Você tem alguma alergia ou intolerância alimentar?',
+        hint: 'Ex: lactose, glúten, frutos do mar...',
+        type: 'yesno',
+        followupPlaceholder: 'Quais alergias ou intolerâncias você tem?',
+        followupId: 'alergias_quais',
+      },
+      {
+        id: 'peso_altura',
+        eyebrow: 'Corpo',
+        question: 'Qual é o seu peso e altura atuais?',
+        hint: 'Estimativas são bem-vindas.',
+        type: 'dual',
+        fields: [
+          { id: 'peso',   label: 'Peso (kg)',   placeholder: 'Ex: 75',  inputmode: 'decimal' },
+          { id: 'altura', label: 'Altura (cm)', placeholder: 'Ex: 168', inputmode: 'numeric' },
+        ],
+      },
+      {
+        id: 'refeicoes',
+        eyebrow: 'Hábitos',
+        question: 'Quantas refeições você faz por dia?',
+        type: 'options',
+        cols: 3,
+        options: [
+          { value: '1-2', label: '1 a 2',     icon: '🍽️' },
+          { value: '3-4', label: '3 a 4',     icon: '🍽️🍽️' },
+          { value: '5+',  label: '5 ou mais', icon: '🍽️🍽️🍽️' },
+        ],
+      },
+      {
+        id: 'come-fora',
+        eyebrow: 'Hábitos',
+        question: 'Você come fora de casa com frequência?',
+        type: 'options',
+        cols: 2,
+        options: [
+          { value: 'nunca',     label: 'Raramente',      icon: '🏠' },
+          { value: 'as-vezes',  label: 'Às vezes',       icon: '🔄' },
+          { value: 'frequente', label: 'Frequentemente', icon: '🍴' },
+          { value: 'sempre',    label: 'Quase sempre',   icon: '🏢' },
+        ],
+      },
+      {
+        id: 'agua',
+        eyebrow: 'Hábitos',
+        question: 'Como está seu consumo de água?',
+        type: 'options',
+        cols: 3,
+        options: [
+          { value: 'pouco',    label: 'Bebo pouco',   icon: '💧' },
+          { value: 'regular',  label: 'Regular',      icon: '💧💧' },
+          { value: 'bastante', label: 'Bebo bastante', icon: '💧💧💧' },
+        ],
+      },
+      {
+        id: 'atividade',
+        eyebrow: 'Estilo de vida',
+        question: 'Você pratica alguma atividade física?',
+        type: 'yesno',
+        followupPlaceholder: 'Qual atividade e quantas vezes por semana?',
+        followupId: 'atividade_qual',
+      },
+      {
+        id: 'intestino',
+        eyebrow: 'Saúde digestiva',
+        question: 'Como está o funcionamento do seu intestino?',
+        type: 'options',
+        cols: 2,
+        options: [
+          { value: 'normal',    label: 'Normal',          icon: '✅' },
+          { value: 'preso',     label: 'Intestino preso', icon: '😣' },
+          { value: 'solto',     label: 'Intestino solto', icon: '🔄' },
+          { value: 'irregular', label: 'Irregular',       icon: '❓' },
+        ],
+      },
+      {
+        id: 'sono',
+        eyebrow: 'Estilo de vida',
+        question: 'Como você avalia a qualidade do seu sono?',
+        type: 'options',
+        cols: 3,
+        options: [
+          { value: 'bom',     label: 'Bom',     icon: '😴' },
+          { value: 'regular', label: 'Regular', icon: '😐' },
+          { value: 'ruim',    label: 'Ruim',    icon: '😩' },
+        ],
+      },
+      {
+        id: 'estresse',
+        eyebrow: 'Estilo de vida',
+        question: 'Qual é o seu nível de estresse no dia a dia?',
+        type: 'options',
+        cols: 3,
+        options: [
+          { value: 'baixo', label: 'Baixo', icon: '😌' },
+          { value: 'medio', label: 'Médio', icon: '😊' },
+          { value: 'alto',  label: 'Alto',  icon: '😰' },
+        ],
+      },
+      {
+        id: 'restricao',
+        eyebrow: 'Preferências',
+        question: 'Você tem alguma restrição alimentar por escolha?',
+        type: 'options',
+        cols: 2,
+        options: [
+          { value: 'nenhuma',     label: 'Nenhuma',        icon: '🙌' },
+          { value: 'vegetariano', label: 'Vegetariano(a)', icon: '🥦' },
+          { value: 'vegano',      label: 'Vegano(a)',       icon: '🌱' },
+          { value: 'outra',       label: 'Outra restrição', icon: '⚙️' },
+        ],
+      },
+      {
+        id: 'acompanhamento-anterior',
+        eyebrow: 'Histórico',
+        question: 'Você já fez acompanhamento nutricional antes?',
+        type: 'options',
+        cols: 2,
+        options: [
+          { value: 'sim', label: 'Sim, já fiz',           icon: '✅' },
+          { value: 'nao', label: 'Não, é a primeira vez', icon: '🌟' },
+        ],
+      },
+      {
+        id: 'observacoes',
+        eyebrow: 'Finalizando',
+        question: 'Quer deixar alguma observação para o Filipe?',
+        hint: 'Conta sua rotina, principal dificuldade ou qualquer detalhe importante.',
+        type: 'textarea',
+        placeholder: 'Escreva aqui... (opcional)',
+        required: false,
+        skipLabel: 'Pular esta pergunta',
+      },
+    ];
+
+    const answers = {};
+    let current = 0;
+    const card = document.getElementById('step-card');
+    const progressFill = document.getElementById('progress-fill');
+    const stepCounter  = document.getElementById('step-counter');
+    const total = STEPS.length;
+
+    initCal();
+
+    function updateProgress() {
+      const pct = Math.round((current / total) * 100);
+      progressFill.style.width = Math.max(pct, 3) + '%';
+      stepCounter.textContent  = `Passo ${current + 1} de ${total}`;
+    }
+
+    function renderStep(idx) {
+      const step = STEPS[idx];
+      card.innerHTML = buildStep(step, idx);
+      card.style.animation = 'none';
+      void card.offsetWidth;
+      card.style.animation = '';
+      attachEvents(step, idx);
+      updateProgress();
+      const first = card.querySelector('input, textarea');
+      if (first) setTimeout(() => first.focus(), 380);
+    }
+
+    function buildStep(step, idx) {
+      let body = '';
+
+      if (step.type === 'calendar') {
+        body = buildCalHTML(answers['data_consulta']);
+
+      } else if (step.type === 'options') {
+        const cols = step.cols ? `cols-${step.cols}` : '';
+        body = `<div class="options ${cols}">` +
+          step.options.map(o => {
+            const desc = o.desc
+              ? `<small style="display:block;font-size:12px;font-weight:500;color:var(--neutral);margin-top:2px">${o.desc}</small>`
+              : '';
+            return `<button type="button" class="opt-btn${answers[step.id] === o.value ? ' selected' : ''}" data-value="${o.value}">
+              <span class="opt-icon">${o.icon}</span><span>${o.label}${desc}</span>
+            </button>`;
+          }).join('') + '</div>';
+
+      } else if (step.type === 'yesno') {
+        const val   = answers[step.id];
+        const extra = answers[step.followupId] || '';
+        body = `
+          <div class="options cols-2">
+            <button type="button" class="opt-btn${val === 'sim' ? ' selected' : ''}" data-value="sim"><span class="opt-icon">✅</span><span>Sim</span></button>
+            <button type="button" class="opt-btn${val === 'nao' ? ' selected' : ''}" data-value="nao"><span class="opt-icon">❌</span><span>Não</span></button>
+          </div>
+          <div class="followup${val === 'sim' ? ' open' : ''}" id="followup">
+            <label>Se sim, quais?</label>
+            <input class="tf-input" type="text" id="followup-input" placeholder="${step.followupPlaceholder}" value="${extra}">
+          </div>`;
+
+      } else if (step.type === 'dual') {
+        body = `<div class="dual-inputs">` +
+          step.fields.map(f => `
+            <div class="input-group">
+              <label for="${f.id}">${f.label}</label>
+              <input class="tf-input" id="${f.id}" inputmode="${f.inputmode || 'text'}" placeholder="${f.placeholder}" value="${answers[f.id] || ''}">
+            </div>`).join('') + '</div>';
+
+      } else if (step.type === 'textarea') {
+        body = `<div class="input-wrap">
+          <textarea class="tf-input" id="tf-main" placeholder="${step.placeholder}">${answers[step.id] || ''}</textarea>
+        </div>`;
+
+      } else {
+        body = `<div class="input-wrap">
+          <input class="tf-input" id="tf-main" type="text" inputmode="${step.inputmode || 'text'}" placeholder="${step.placeholder}" value="${answers[step.id] || ''}">
+          <div class="error-msg">${step.errorMsg || 'Campo obrigatório.'}</div>
+        </div>`;
+      }
+
+      const backBtn  = idx > 0 ? `<button class="btn btn-back" id="btn-back" aria-label="Voltar">←</button>` : '';
+      const skipLink = step.skipLabel ? `<span class="skip-link" id="btn-skip">${step.skipLabel}</span>` : '';
+      const nextLabel = idx === total - 1 ? 'Enviar para o Filipe →' : 'Continuar →';
+
+      return `
+        <div class="step-eyebrow">${step.eyebrow || ''}</div>
+        <h2 class="step-question">${step.question}</h2>
+        ${step.hint ? `<p class="step-hint">${step.hint}</p>` : ''}
+        ${body}
+        <div class="step-nav">${backBtn}<button class="btn btn-primary" id="btn-next">${nextLabel}</button></div>
+        ${skipLink}`;
+    }
+
+    function attachEvents(step, idx) {
+      document.getElementById('btn-back')?.addEventListener('click', () => { current--; renderStep(current); });
+      document.getElementById('btn-skip')?.addEventListener('click', () => advance(step, idx, true));
+      document.getElementById('btn-next')?.addEventListener('click', () => advance(step, idx, false));
+
+      if (step.type === 'calendar') {
+        const today = new Date();
+
+        document.getElementById('cal-prev')?.addEventListener('click', () => {
+          if (calYear === today.getFullYear() && calMonth === today.getMonth()) return;
+          calMonth--;
+          if (calMonth < 0) { calMonth = 11; calYear--; }
+          card.innerHTML = buildStep(step, idx);
+          attachEvents(step, idx);
+        });
+
+        document.getElementById('cal-next')?.addEventListener('click', () => {
+          calMonth++;
+          if (calMonth > 11) { calMonth = 0; calYear++; }
+          card.innerHTML = buildStep(step, idx);
+          attachEvents(step, idx);
+        });
+
+        card.querySelectorAll('.cal-day[data-date]').forEach(el => {
+          el.addEventListener('click', () => {
+            answers['data_consulta'] = el.dataset.date;
+            card.innerHTML = buildStep(step, idx);
+            attachEvents(step, idx);
+          });
+        });
+      }
+
+      if (step.type === 'options') {
+        card.querySelectorAll('.opt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            card.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            answers[step.id] = btn.dataset.value;
+            setTimeout(() => advance(step, idx, false), 220);
+          });
+        });
+      }
+
+      if (step.type === 'yesno') {
+        card.querySelectorAll('.opt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            card.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            answers[step.id] = btn.dataset.value;
+            const followup = document.getElementById('followup');
+            if (btn.dataset.value === 'sim') {
+              followup.classList.add('open');
+              document.getElementById('followup-input')?.focus();
+            } else {
+              followup.classList.remove('open');
+              answers[step.followupId] = '';
+            }
+          });
+        });
+        const fi = document.getElementById('followup-input');
+        if (fi) {
+          fi.addEventListener('input', () => { answers[step.followupId] = fi.value; });
+          fi.addEventListener('keydown', e => { if (e.key === 'Enter') advance(step, idx, false); });
+        }
+      }
+
+      const mainInput = document.getElementById('tf-main');
+      if (mainInput) {
+        mainInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter' && step.type !== 'textarea') advance(step, idx, false);
+        });
+      }
+
+      if (step.type === 'dual') {
+        step.fields.forEach(f => {
+          document.getElementById(f.id)?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') advance(step, idx, false);
+          });
+        });
+      }
+    }
+
+    function advance(step, idx, skip) {
+      if (!skip && !validate(step)) return;
+      saveAnswer(step, skip);
+      if (idx === total - 1) { submit(); return; }
+      current++;
+      renderStep(current);
+    }
+
+    function validate(step) {
+      if (step.type === 'calendar') {
+        if (!answers['data_consulta']) { shake(card); return false; }
+        return true;
+      }
+      if (step.type === 'options') {
+        if (!answers[step.id]) { shake(card); return false; }
+        return true;
+      }
+      if (step.type === 'yesno') {
+        if (!answers[step.id]) { shake(card); return false; }
+        return true;
+      }
+      if (step.type === 'dual') {
+        let ok = true;
+        step.fields.forEach(f => {
+          const el = document.getElementById(f.id);
+          const empty = !el?.value.trim();
+          el?.classList.toggle('invalid', empty);
+          if (empty) ok = false;
+        });
+        return ok;
+      }
+      if (step.type === 'textarea' && !step.required) return true;
+      const el = document.getElementById('tf-main');
+      if (!el) return true;
+      const valid = step.validate ? step.validate(el.value) : el.value.trim().length >= 1;
+      el.classList.toggle('invalid', !valid);
+      el.closest('.input-wrap')?.classList.toggle('show-error', !valid);
+      return valid;
+    }
+
+    function shake(el) {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = 'shake 320ms cubic-bezier(0.36,0.07,0.19,0.97) both';
+    }
+
+    function saveAnswer(step, skip) {
+      if (skip) return;
+      if (['options','yesno','calendar'].includes(step.type)) return;
+      if (step.type === 'dual') {
+        step.fields.forEach(f => {
+          const el = document.getElementById(f.id);
+          if (el) answers[f.id] = el.value.trim();
+        });
+        return;
+      }
+      const el = document.getElementById('tf-main');
+      if (el) answers[step.id] = el.value.trim();
+    }
+
+    function labelFor(stepId, value) {
+      const step = STEPS.find(s => s.id === stepId);
+      if (!step?.options) return value || '—';
+      return step.options.find(o => o.value === value)?.label || value || '—';
+    }
+
+    function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+    function buildWhatsAppMessage() {
+      const data  = answers['data_consulta'] ? formatDate(answers['data_consulta']) : '—';
+      const modal = answers['modalidade'] === 'online'
+        ? 'Online (videochamada)'
+        : answers['modalidade'] === 'presencial'
+          ? 'Presencial (Florianópolis - SC)'
+          : '—';
+
+      const lines = [
+        'Olá, Filipe! Acabei de preencher a pré-consulta. Aqui estão minhas informações:',
+        '',
+        `📅 Data preferida: ${data}`,
+        `🕐 Horário preferido: ${answers['horario'] || '—'}`,
+        `📍 Modalidade: ${modal}`,
+        '',
+        `👤 Nome: ${answers.name || '—'}`,
+        `🎂 Idade: ${answers.age ? answers.age + ' anos' : '—'}`,
+        `⚥ Sexo: ${capitalize(answers.sex || '')}`,
+        `🎯 Objetivo: ${labelFor('goal', answers.goal)}`,
+        '',
+        '── Saúde ──',
+        `Doenças: ${answers.doencas === 'sim' ? (answers.doencas_quais || 'Sim') : 'Não'}`,
+        `Medicamentos/suplementos: ${answers.medicamentos === 'sim' ? (answers.medicamentos_quais || 'Sim') : 'Não'}`,
+        `Alergias/intolerâncias: ${answers.alergias === 'sim' ? (answers.alergias_quais || 'Sim') : 'Não'}`,
+      ];
+
+      if (answers.peso || answers.altura)
+        lines.push(`Peso: ${answers.peso || '—'} kg  |  Altura: ${answers.altura || '—'} cm`);
+
+      lines.push('', '── Hábitos ──');
+      if (answers.refeicoes)                     lines.push(`Refeições/dia: ${answers.refeicoes}`);
+      if (answers['come-fora'])                  lines.push(`Come fora: ${labelFor('come-fora', answers['come-fora'])}`);
+      if (answers.agua)                          lines.push(`Água: ${labelFor('agua', answers.agua)}`);
+      if (answers.atividade)                     lines.push(`Atividade física: ${answers.atividade === 'sim' ? (answers.atividade_qual || 'Sim') : 'Não'}`);
+      if (answers.intestino)                     lines.push(`Intestino: ${labelFor('intestino', answers.intestino)}`);
+      if (answers.sono)                          lines.push(`Sono: ${capitalize(answers.sono)}`);
+      if (answers.estresse)                      lines.push(`Estresse: ${capitalize(answers.estresse)}`);
+      if (answers.restricao)                     lines.push(`Restrição alimentar: ${labelFor('restricao', answers.restricao)}`);
+      if (answers['acompanhamento-anterior'])     lines.push(`Acompanhamento anterior: ${answers['acompanhamento-anterior'] === 'sim' ? 'Sim' : 'Não'}`);
+      if (answers.observacoes)                   lines.push(`\n💬 Observações: ${answers.observacoes}`);
+
+      return lines.join('\n');
+    }
+
+    function submit() {
+      sessionStorage.setItem('preconsulta_msg', buildWhatsAppMessage());
+      window.location.href = 'obrigado-pre-consulta.html';
+    }
+
+    const ks = document.createElement('style');
+    ks.textContent = `@keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-6px)}40%,60%{transform:translateX(6px)}}`;
+    document.head.appendChild(ks);
+
+    renderStep(0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Artefatos internos
+*.artifact.json
+
+# Pasta de fotos originais (já copiadas para a raiz)
+fotos/
+
+# Sistema
+.DS_Store
+
+# Internos do Open Design
+.od-skills/
